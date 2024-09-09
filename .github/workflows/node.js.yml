@@ -34,6 +34,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install Backend Dependencies
+      working-directory: ./blog-backend
+      run: npm install
+    
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -41,10 +45,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '14'
-
-    - name: Install Backend Dependencies
-      working-directory: ./blog-backend
-      run: npm install
 
     - name: Start Backend
       working-directory: ./blog-backend
@@ -72,6 +72,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install Frontend Dependencies
+      working-directory: ./blog-frontend
+      run: npm install
+    
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -80,9 +84,6 @@ jobs:
       with:
         node-version: '14'
 
-    - name: Install Frontend Dependencies
-      working-directory: ./blog-frontend
-      run: npm install
 
     - name: Start Frontend
       working-directory: ./blog-frontend
