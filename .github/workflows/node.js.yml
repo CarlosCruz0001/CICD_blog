@@ -26,7 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-
+    - run: npm start
 
   backend-tests:
     name: Backend Tests
@@ -82,11 +82,6 @@ jobs:
     - name: Install Frontend Dependencies
       working-directory: ./blog-frontend
       run: npm install
-
-    - name: Install cross-env
-      working-directory: ./blog-frontend
-      run: npm install cross-env --save-dev
-
 
     - name: Start Frontend
       working-directory: ./blog-frontend
