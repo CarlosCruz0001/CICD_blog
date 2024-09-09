@@ -1,10 +1,7 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_IDD }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_IDD }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
   push:
@@ -45,19 +42,19 @@ jobs:
         node-version: '14'
 
     - name: Install Backend Dependencies
-      working-directory: ./blog-backend
+      working-directory: ./blog-api
       run: npm install
 
-    - name: Install currently
-      working-directory: ./blog-backend
-      run: npm install concurrently --save-dev
+    - name: Run Backend Tests
+      working-directory: ./blog-api
+      run: npm test
 
-
-    - name: Cypress test
+    - name: Cypress test for Backend
       uses: cypress-io/github-action@v5
       with:
-        command: npm test
         start: npm start
+        wait-on: http://localhost:3000
+        wait-on-timeout: 120
       env:
         CI: false
 
@@ -79,34 +76,23 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install
 
-    - name: Instala o cross-env
-      working-directory: ./blog-frontend
-      run: npm install cypress --save-dev
-
-    - name: Install currently
-      working-directory: ./blog-backend
-      run: npm install concurrently --save-dev
-
-
-    - name: Instala o typescript
-      working-directory: ./blog-frontend
-      run: npm install typescript --save-dev
-
-    - name: Cypress test
+    - name: Cypress test for Frontend
       uses: cypress-io/github-action@v5
       with:
-        command: npm run cypress run
         start: npm start
-
-        
+        wait-on: http://localhost:3001
+        wait-on-timeout: 120
       env:
         CI: false
         
     - name: Install Vercel CLI
-      run: npm install --global vercel@lat  est
+      run: npm install --global vercel@latest
+
     - name: Pull Vercel Environment Information
       run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
     - name: Build Project Artifacts
       run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
     - name: Deploy Project Artifacts to Vercel
       run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
