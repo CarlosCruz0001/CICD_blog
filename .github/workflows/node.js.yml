@@ -47,6 +47,13 @@ jobs:
       working-directory: ./blog-backend
       run: npm install
 
+    - name: Start Backend
+      working-directory: ./blog-backend
+      run: npm start &
+
+    - name: Wait for Backend to Start
+      run: sleep 15 # Adjust time if needed
+
     - name: Run Backend Tests
       working-directory: ./blog-backend
       run: npm run test
@@ -67,6 +74,13 @@ jobs:
     - name: Install Frontend Dependencies
       working-directory: ./blog-frontend
       run: npm install
+
+    - name: Start Frontend
+      working-directory: ./blog-frontend
+      run: npm start &
+
+    - name: Wait for Frontend to Start
+      run: sleep 15 # Adjust time if needed
 
     - name: Run Cypress Tests
       working-directory: ./blog-frontend
