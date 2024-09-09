@@ -1,4 +1,5 @@
 name: Node.js CI
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -26,7 +27,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-
+    - run: npm install
+    - run: npm test
 
   backend-tests:
     name: Backend Tests
@@ -42,22 +44,12 @@ jobs:
         node-version: '14'
 
     - name: Install Backend Dependencies
-      working-directory: ./blog-api
+      working-directory: ./blog-backend
       run: npm install
 
     - name: Run Backend Tests
-      working-directory: ./blog-api
-      run: npm test
-
-    - name: Cypress test for Backend
-      uses: cypress-io/github-action@v5
-      with:
-        start: npm start
-        wait-on: http://localhost:3000
-        wait-on-timeout: 120
-      env:
-        CI: false
-
+      working-directory: ./blog-backend
+      run: npm run test
 
   frontend-tests:
     name: Frontend Tests
@@ -76,23 +68,27 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install
 
-    - name: Cypress test for Frontend
-      uses: cypress-io/github-action@v5
-      with:
-        start: npm start
-        wait-on: http://localhost:3001
-        wait-on-timeout: 120
-      env:
-        CI: false
-        
+    - name: Run Cypress Tests
+      working-directory: ./blog-frontend
+      run: npm run cy:run
+
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [build, backend-tests, frontend-tests]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Install Vercel CLI
       run: npm install --global vercel@latest
 
     - name: Pull Vercel Environment Information
       run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-    - name: Build Project Artifacts
+    - name: Build Project
       run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-    - name: Deploy Project Artifacts to Vercel
+    - name: Deploy to Vercel
       run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
