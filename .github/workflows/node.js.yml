@@ -26,6 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
+    - run: npm install --save-dev concurrently
     - run: npm start
 
   backend-tests:
