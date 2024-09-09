@@ -70,6 +70,10 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install
 
+    - name: Instala o cross-env
+      working-directory: ./blog-frontend
+      run: npm install cypress --save-dev
+
     - name: Instala o typescript
       working-directory: ./blog-frontend
       run: npm install typescript --save-dev
