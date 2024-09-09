@@ -80,6 +80,12 @@ jobs:
         working-directory: ./blog-frontend
         run: npm install
 
+      - name: Start Backend
+        working-directory: ./blog-backend
+        run: npm start &
+        env:
+          PORT: 3000
+
       - name: Start Frontend
         working-directory: ./blog-frontend
         run: npm start &
