@@ -90,7 +90,20 @@ jobs:
 
     - name: Start Frontend
       working-directory: ./blog-frontend
-      run: npm start 
+      run: npm start &
+
+    - name: Wait for Frontend to Start
+      run: |
+        for i in {1..30}; do
+          if curl -s http://localhost:3001; then
+            echo "Frontend is up"
+            exit 0
+          fi
+          echo "Waiting for Frontend to start..."
+          sleep 5
+        done
+        echo "Frontend did not start in time"
+        exit 1
 
     - name: Run Cypress Tests
       working-directory: ./blog-frontend
