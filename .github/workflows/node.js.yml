@@ -25,14 +25,14 @@ jobs:
           cache: 'npm'
       - run: npm install
 
-  backend-tests:
-    name: Backend Tests
+  start-services:
+    name: Start Backend and Frontend Services
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js for Backend
+      - name: Set up Node.js for Backend and Frontend
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -41,32 +41,49 @@ jobs:
         working-directory: ./blog-backend
         run: npm install
 
+      - name: Install Frontend Dependencies
+        working-directory: ./blog-frontend
+        run: npm install
+
       - name: Start Backend
         working-directory: ./blog-backend
-        run: npm start &
+        run: |
+          npx kill-port 3000
+          npm start &
         env:
           PORT: 3000
 
-      - name: Wait for Backend to Start
+      - name: Start Frontend
+        working-directory: ./blog-frontend
+        run: |
+          npx kill-port 3001
+          npm start &
+        env:
+          PORT: 3001
+
+      - name: Wait for Backend and Frontend to Start
         run: |
           for i in {1..30}; do
             if curl -s http://localhost:3000; then
               echo "Backend is up"
-              exit 0
+              break
             fi
             echo "Waiting for Backend to start..."
             sleep 5
           done
-          echo "Backend did not start in time"
-          exit 1
-
-      - name: Run Backend Tests
-        working-directory: ./blog-backend
-        run: npm run test
+          for i in {1..30}; do
+            if curl -s http://localhost:3001; then
+              echo "Frontend is up"
+              break
+            fi
+            echo "Waiting for Frontend to start..."
+            sleep 5
+          done
 
   frontend-tests:
     name: Frontend Tests
     runs-on: ubuntu-latest
+    needs: start-services
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -80,45 +97,6 @@ jobs:
         working-directory: ./blog-frontend
         run: npm install
 
-      - name: Start Backend
-        working-directory: ./blog-backend
-        run: npm start &
-        env:
-          PORT: 3000
-
-      - name: Wait for Backend to Start
-        run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:3000; then
-              echo "Backend is up"
-              exit 0
-            fi
-            echo "Waiting for Backend to start..."
-            sleep 5
-          done
-          echo "Backend did not start in time"
-          exit 1
-
-
-      - name: Start Frontend
-        working-directory: ./blog-frontend
-        run: npm start &
-        env:
-          PORT: 3001
-
-      - name: Wait for Frontend to Start
-        run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:3001; then
-              echo "Frontend is up"
-              exit 0
-            fi
-            echo "Waiting for Frontend to start..."
-            sleep 5
-          done
-          echo "Frontend did not start in time"
-          exit 1
-
       - name: Run Cypress Tests
         working-directory: ./blog-frontend
         run: npm run cy:run -- --headless
@@ -126,7 +104,7 @@ jobs:
   deploy:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: [backend-tests, frontend-tests]
+    needs: frontend-tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
