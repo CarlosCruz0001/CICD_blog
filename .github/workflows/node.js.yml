@@ -38,11 +38,11 @@ jobs:
           node-version: '18'
 
       - name: Install Backend Dependencies
-        working-directory: ./blog-api
+        working-directory: ./blog-backend
         run: npm install
 
       - name: Start Backend
-        working-directory: ./blog-api
+        working-directory: ./blog-backend
         run: npm start &
         env:
           PORT: 3000
@@ -61,7 +61,7 @@ jobs:
           exit 1
 
       - name: Run Backend Tests
-        working-directory: ./blog-api
+        working-directory: ./blog-backend
         run: npm run test
 
   frontend-tests:
