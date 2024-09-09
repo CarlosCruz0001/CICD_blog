@@ -12,13 +12,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
@@ -50,9 +48,9 @@ jobs:
     - name: Start Backend
       working-directory: ./blog-backend
       run: npm start &
-
+      
     - name: Wait for Backend to Start
-      run: sleep 15 # Adjust time if needed
+      run: sleep 15
 
     - name: Run Backend Tests
       working-directory: ./blog-backend
@@ -78,13 +76,13 @@ jobs:
     - name: Start Frontend
       working-directory: ./blog-frontend
       run: npm start &
-
+      
     - name: Wait for Frontend to Start
-      run: sleep 15 # Adjust time if needed
+      run: sleep 30 # Ajuste conforme necessário
 
     - name: Run Cypress Tests
       working-directory: ./blog-frontend
-      run: npm run cy:run
+      run: npm run cy:run -- --headless
 
   deploy:
     name: Deploy to Vercel
