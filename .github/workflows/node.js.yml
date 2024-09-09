@@ -45,7 +45,7 @@ jobs:
         node-version: '14'
 
     - name: Install Backend Dependencies
-      working-directory: ./backend
+      working-directory: ./blog-backend
       run: npm install
 
     - name: Inicia o Backend
