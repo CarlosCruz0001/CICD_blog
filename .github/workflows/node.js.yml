@@ -48,6 +48,11 @@ jobs:
       working-directory: ./blog-backend
       run: npm install
 
+    - name: Install currently
+      working-directory: ./blog-backend
+      run: npm install concurrently --save-dev
+
+
     - name: Cypress test
       uses: cypress-io/github-action@v5
       with:
@@ -77,6 +82,11 @@ jobs:
     - name: Instala o cross-env
       working-directory: ./blog-frontend
       run: npm install cypress --save-dev
+
+    - name: Install currently
+      working-directory: ./blog-backend
+      run: npm install concurrently --save-dev
+
 
     - name: Instala o typescript
       working-directory: ./blog-frontend
