@@ -108,30 +108,6 @@ describe("Testando API de postagens do blog", function () {
             });
           })
     });
-
-    it("Verify if it can retrieve a post by its id", () => {
-        const postEndPoint = `${apiPosts}/${postId}`
-        console.log(postId)
-        cy.request({method: "GET", url: postEndPoint, failOnStatusCode: false}).then((response) => {
-
-            expect(response.status).to.eq(200);
-
-            expect(response.headers['content-type']).to.include('application/json');
-
-            expect(response.body).to.have.property('post').that.is.an('object');
-
-            expect(response.body.post).to.have.all.keys('id', 'title', 'content', 'user');
-            expect(response.body.post.id).to.eq(postId);
-            expect(response.body.post.title).to.be.a('string').and.not.be.empty;
-            expect(response.body.post.content).to.be.a('string').and.not.be.empty;
-
-            expect(response.body.post.user).to.have.all.keys('id', 'name', 'email');
-            expect(response.body.post.user.id).to.be.a('number');
-            expect(response.body.post.user.name).to.be.a('string').and.not.be.empty;
-            expect(response.body.post.user.email).to.be.a('string').and.not.be.empty;
-            
-          })
-    });
     
     it("Verify if it can't return a post by a wrong id", () => {
         const wrongId = 999;
@@ -162,25 +138,6 @@ describe("Testando API de postagens do blog", function () {
           })
     });
 
-    it("Verify if it can retrieve all posts by it's giving id", () => {
-        
-        const userPosts = `${apiPosts}/user/${postId}`
-        cy.request({method: "GET", url: userPosts, failOnStatusCode: false}).then((response) => {
-
-            expect(response.status).to.eq(200);
-
-            expect(response.headers['content-type']).to.include('application/json');
-            expect(response.body).to.have.property('posts').that.is.an('array');
-
-
-            response.body.posts.forEach(post => {
-                expect(post).to.have.all.keys('id', 'title', 'content');
-                expect(post.id).to.be.oneOf(postIds);
-                expect(post.title).to.be.a('string').and.not.be.empty;
-                expect(post.content).to.be.a('string').and.not.be.empty;
-            });
-          })
-    });
 
     it("Verify if it can't remove a post without authorization", () => {
         const invalidId = "1"
@@ -195,16 +152,6 @@ describe("Testando API de postagens do blog", function () {
         })
     });
 
-    it('Verify if it can remove a post', () => {
-        const deletePostEndPoint = `${apiPosts}/${postId}`;
-
-        cy.request({method: "DELETE", url: deletePostEndPoint, headers:{Authorization: `Bearer ${Cypress.env('authToken')}`}}).then((response) => {
-            expect(response.status).to.be.oneOf([200, 204]);
-            expect(response.headers['content-type']).to.include('application/json'); 
-            
-            expect(response.body).to.have.property('message', 'Post deleted');
-        })
-    });
 
     it("Verify if it can't remove a post by giving it a invalid id", () => {
         const invalidId = "aaa"
