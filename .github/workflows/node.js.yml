@@ -49,11 +49,11 @@ jobs:
       run: npm install
 
     - name: Inicia o Backend
-      working-directory: ./backend
+      working-directory: ./blog-backend
       run: npm start
 
     - name: Run Backend Tests
-      working-directory: ./backend
+      working-directory: ./blog-backend
       run: npm cypress run
 
   frontend-tests:
@@ -70,19 +70,19 @@ jobs:
         node-version: '14'
 
     - name: Install Frontend Dependencies
-      working-directory: ./frontend
+      working-directory: ./blog-frontend
       run: npm install
 
     - name: Instala o cross-env
-      working-directory: ./frontend
+      working-directory: ./blog-frontend
       run: npm install cross-env --save-dev
 
     - name: Run Frontend 
-      working-directory: ./frontend
+      working-directory: ./blog-frontend
       run: npm start
 
     - name: Run Frontend Tests
-      working-directory: ./frontend
+      working-directory: ./blog-frontend
       run: npm cypress run
         
       env:
