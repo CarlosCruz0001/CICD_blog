@@ -8,9 +8,9 @@ env:
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -30,11 +30,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Cypress test
-      uses: cypress-io/github-action@v5
-      with:
-        command: npm test
-        start: npm start
 
   backend-tests:
     name: Backend Tests
@@ -53,9 +48,13 @@ jobs:
       working-directory: ./backend
       run: npm install
 
+    - name: Inicia o Backend
+      working-directory: ./backend
+      run: npm start
+
     - name: Run Backend Tests
       working-directory: ./backend
-      run: npm test
+      run: npm cypress run
 
   frontend-tests:
     name: Frontend Tests
@@ -74,9 +73,17 @@ jobs:
       working-directory: ./frontend
       run: npm install
 
+    - name: Instala o cross-env
+      working-directory: ./frontend
+      run: npm install cross-env --save-dev
+
+    - name: Run Frontend 
+      working-directory: ./frontend
+      run: npm start
+
     - name: Run Frontend Tests
       working-directory: ./frontend
-      run: npm test
+      run: npm cypress run
         
       env:
         CI: false
