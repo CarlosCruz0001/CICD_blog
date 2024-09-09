@@ -83,6 +83,11 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install
 
+    - name: Install cross-env
+      working-directory: ./blog-frontend
+      run: npm install cross-env --save-dev
+
+
     - name: Start Frontend
       working-directory: ./blog-frontend
       run: npm start &
