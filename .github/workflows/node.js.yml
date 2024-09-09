@@ -50,12 +50,7 @@ jobs:
 
     - name: Run Backend Tests
       working-directory: ./blog-backend
-      run: npm cypress run
-
-    - name: Inicia o Backend
-      working-directory: ./blog-backend
-      run: npm start
-
+      run: npm run test
 
 
   frontend-tests:
@@ -81,12 +76,7 @@ jobs:
 
     - name: Run Frontend Tests
       working-directory: ./blog-frontend
-      run: npm cypress run
-
-    - name: Run Frontend 
-      working-directory: ./blog-frontend
-      run: npm start
-
+      run: npm run cy:run
 
         
       env:
