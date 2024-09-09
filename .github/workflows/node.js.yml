@@ -26,7 +26,7 @@ jobs:
       - run: npm install
 
   start-services:
-    name: Start Backend and Frontend Services
+    name: Start Backend and Frontend Services and test it
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -80,31 +80,18 @@ jobs:
             sleep 5
           done
 
-  frontend-tests:
-    name: Frontend Tests
-    runs-on: ubuntu-latest
-    needs: start-services
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Frontend Dependencies
-        working-directory: ./blog-frontend
-        run: npm install
-
-      - name: Run Cypress Tests
+      - name: Run Cypress Tests - Frontend
         working-directory: ./blog-frontend
         run: npm run cy:run -- --headless
+        
+      - name: Run Cypress Tests - Backend
+        working-directory: ./blog-backend
+        run: npm run test -- --headless   
 
   deploy:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: frontend-tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
