@@ -48,13 +48,15 @@ jobs:
       working-directory: ./blog-backend
       run: npm install
 
+    - name: Run Backend Tests
+      working-directory: ./blog-backend
+      run: npm cypress run
+
     - name: Inicia o Backend
       working-directory: ./blog-backend
       run: npm start
 
-    - name: Run Backend Tests
-      working-directory: ./blog-backend
-      run: npm cypress run
+
 
   frontend-tests:
     name: Frontend Tests
@@ -77,13 +79,15 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install typescript --save-dev
 
+    - name: Run Frontend Tests
+      working-directory: ./blog-frontend
+      run: npm cypress run
+
     - name: Run Frontend 
       working-directory: ./blog-frontend
       run: npm start
 
-    - name: Run Frontend Tests
-      working-directory: ./blog-frontend
-      run: npm cypress run
+
         
       env:
         CI: false
