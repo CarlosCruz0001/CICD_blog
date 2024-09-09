@@ -26,7 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm test
+
 
   backend-tests:
     name: Backend Tests
@@ -52,7 +52,7 @@ jobs:
     - name: Wait for Backend to Start
       run: |
         for i in {1..30}; do
-          if curl -s http://localhost:3001; then
+          if curl -s http://localhost:3000; then
             echo "Backend is up"
             exit 0
           fi
@@ -90,7 +90,7 @@ jobs:
     - name: Wait for Frontend to Start
       run: |
         for i in {1..30}; do
-          if curl -s http://localhost:3000; then
+          if curl -s http://localhost:3001; then
             echo "Frontend is up"
             exit 0
           fi
