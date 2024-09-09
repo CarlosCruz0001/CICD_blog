@@ -48,9 +48,19 @@ jobs:
     - name: Start Backend
       working-directory: ./blog-backend
       run: npm start &
-      
+
     - name: Wait for Backend to Start
-      run: sleep 15
+      run: |
+        for i in {1..30}; do
+          if curl -s http://localhost:3001; then
+            echo "Backend is up"
+            exit 0
+          fi
+          echo "Waiting for Backend to start..."
+          sleep 5
+        done
+        echo "Backend did not start in time"
+        exit 1
 
     - name: Run Backend Tests
       working-directory: ./blog-backend
@@ -76,9 +86,19 @@ jobs:
     - name: Start Frontend
       working-directory: ./blog-frontend
       run: npm start &
-      
+
     - name: Wait for Frontend to Start
-      run: sleep 30 # Ajuste conforme necessário
+      run: |
+        for i in {1..30}; do
+          if curl -s http://localhost:3000; then
+            echo "Frontend is up"
+            exit 0
+          fi
+          echo "Waiting for Frontend to start..."
+          sleep 5
+        done
+        echo "Frontend did not start in time"
+        exit 1
 
     - name: Run Cypress Tests
       working-directory: ./blog-frontend
