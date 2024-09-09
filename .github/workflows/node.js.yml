@@ -86,6 +86,20 @@ jobs:
         env:
           PORT: 3000
 
+      - name: Wait for Backend to Start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000; then
+              echo "Backend is up"
+              exit 0
+            fi
+            echo "Waiting for Backend to start..."
+            sleep 5
+          done
+          echo "Backend did not start in time"
+          exit 1
+
+
       - name: Start Frontend
         working-directory: ./blog-frontend
         run: npm start &
