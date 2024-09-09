@@ -50,6 +50,11 @@ jobs:
 
     - name: Run Backend Tests
       working-directory: ./blog-backend
+      run: npm run start
+
+
+    - name: Run Backend Tests
+      working-directory: ./blog-backend
       run: npm run test
 
 
@@ -77,6 +82,10 @@ jobs:
     - name: Instala o typescript
       working-directory: ./blog-frontend
       run: npm install typescript --save-dev
+
+    - name: Run Frontend Tests
+      working-directory: ./blog-frontend
+      run: npm run start
 
     - name: Run Frontend Tests
       working-directory: ./blog-frontend
