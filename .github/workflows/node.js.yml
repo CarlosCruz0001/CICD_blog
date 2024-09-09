@@ -26,27 +26,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm install --save-dev concurrently
-
-    - name: Install Backend Dependencies
-      working-directory: ./blog-backend
-      run: npm install
-
-    - name: Install Frontend Dependencies
-      working-directory: ./blog-frontend
-      run: npm install
-      
-    - name: Inicia o app
-      working-directory: ./
-      run: npm start
       
   backend-tests:
     name: Backend Tests
     runs-on: ubuntu-latest
 
     steps:
-
-    
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -86,9 +71,7 @@ jobs:
     name: Frontend Tests
     runs-on: ubuntu-latest
 
-    steps:
-
-    
+    steps:   
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -108,7 +91,7 @@ jobs:
     - name: Wait for Frontend to Start
       run: |
         for i in {1..30}; do
-          if curl -s http://localhost:3001; then
+          if curl -s http://localhost:3000; then
             echo "Frontend is up"
             exit 0
           fi
