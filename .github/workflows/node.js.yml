@@ -73,9 +73,9 @@ jobs:
       working-directory: ./blog-frontend
       run: npm install
 
-    - name: Instala o cross-env
+    - name: Instala o typescript
       working-directory: ./blog-frontend
-      run: npm install cross-env --save-dev
+      run: npm install typescript --save-dev
 
     - name: Run Frontend 
       working-directory: ./blog-frontend
