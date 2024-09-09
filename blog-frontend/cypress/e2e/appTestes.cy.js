@@ -24,20 +24,16 @@ it("Deve cadastrar um usuário com sucesso", function () {
   });
 
 
-
-
   it("Nao deve cadastrar o mesmo usuário duas vezes", function () {
     cy.get(":nth-child(3) > a").click();
     cy.get(":nth-child(1) > input").type("Bruno");
     cy.get(":nth-child(2) > input").type("bruno@email.com");
     cy.get(":nth-child(3) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(1000);
     cy.get(":nth-child(1) > input").type("Bruno");
     cy.get(":nth-child(2) > input").type("bruno@email.com");
     cy.get(":nth-child(3) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(1000);
     cy.get(".error-message").should(
       "contain",
       "Erro ao registrar o usuário. Tente novamente."
@@ -95,12 +91,10 @@ describe("Testes de login", () => {
     cy.get(":nth-child(2) > input").type("daniel@email.com");
     cy.get(":nth-child(3) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(":nth-child(2) > a").click();
     cy.get(":nth-child(1) > input").type("daniel@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -149,7 +143,6 @@ describe("Testes de login", () => {
     cy.get(":nth-child(1) > input").type("daniel@email.com");
     cy.get(":nth-child(2) > input").type("123");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".error-message").should("contain", "User not authorized");
   });
 
@@ -161,7 +154,6 @@ describe("Testes de login", () => {
     cy.get(":nth-child(1) > input").type("emanuel@email.com");
     cy.get(":nth-child(2) > input").type("1@2A3b4c5d");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".error-message").should("contain", "User not authorized");
   });
 });
@@ -184,7 +176,6 @@ describe("Testes de post", () => {
       "O texto poderia ser qualquer coisa, como um lorem"
     );
     cy.get("button").click();
-    cy.wait(2000);
     cy.get(".error-message").should(
       "contain",
       "Você precisa estar autenticado para criar uma postagem."
@@ -200,12 +191,10 @@ describe("Testes de post", () => {
     cy.get(":nth-child(2) > input").type("fabio@email.com");
     cy.get(":nth-child(3) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(":nth-child(2) > a").click();
     cy.get(":nth-child(1) > input").type("fabio@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -231,7 +220,6 @@ describe("Testes de post", () => {
     cy.get(":nth-child(1) > input").type("fabio@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -241,7 +229,6 @@ describe("Testes de post", () => {
       "O texto poderia ser qualquer coisa, como um lorem"
     );
     cy.get("button").click();
-    cy.wait(2000);
     cy.get("form").submit();
     cy.get(".error-message").should("be.visible");
     cy.get(".error-message").should("contain", "Erro ao criar postagem.");
@@ -255,7 +242,6 @@ describe("Testes de post", () => {
     cy.get(":nth-child(1) > input").type("fabio@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -263,7 +249,7 @@ describe("Testes de post", () => {
     cy.get(":nth-child(4) > a").click();
     cy.get("input").type("Este é um post de teste");
     cy.get("button").click();
-    cy.wait(2000);
+
     cy.get("form").submit();
     cy.get(".error-message").should("be.visible");
     cy.get(".error-message").should("contain", "Erro ao criar postagem.");
@@ -281,7 +267,6 @@ it("Não deve criar post com título pequeno ", function () {
     cy.get(":nth-child(1) > input").type("fabio@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -292,7 +277,6 @@ it("Não deve criar post com título pequeno ", function () {
       "O texto poderia ser qualquer coisa, como um lorem (Post 2)"
     );
     cy.get("button").click();
-    cy.wait(20000);
     cy.get('.error-message').should('contain', 'Erro ao criar postagem.');
   });
 
@@ -308,7 +292,6 @@ it("Não deve criar post com conteúdo pequeno ", function () {
     cy.get(":nth-child(1) > input").type("fabio@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
@@ -319,7 +302,6 @@ it("Não deve criar post com conteúdo pequeno ", function () {
       "O"
     );
     cy.get("button").click();
-    cy.wait(20000);
     cy.get('.error-message').should('contain', 'Erro ao criar postagem.');
   });
 
@@ -345,12 +327,10 @@ describe("Testes completo ", () => {
     cy.get(":nth-child(2) > input").type("gabriel@email.com");
     cy.get(":nth-child(3) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(":nth-child(2) > a").click();
     cy.get(":nth-child(1) > input").type("gabriel@email.com");
     cy.get(":nth-child(2) > input").type("1@2B3c4d5e");
     cy.get("button").click();
-    cy.wait(20000);
     cy.get(".success-message").should(
       "contain",
       "Login bem-sucedido! Redirecionando..."
