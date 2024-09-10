@@ -2,13 +2,13 @@ const apiPosts = 'http://localhost:3000/posts';
 const apiUsers = 'http://localhost:3000/users';
 const loginEndPoint = `${apiUsers}/login`;
 
-//let userCredentials = {
-  //  name: "Maicon Cezar Real",
-    //email: "maiconReal@gmail.com",
-    //password: "Ma1234567@"
-//}
-//let postId;
-//let postIds = [];
+let userCredentials = {
+    name: "Maicon Cezar Real",
+    email: "maiconReal@gmail.com",
+    password: "Ma1234567@"
+}
+let postId;
+let postIds = [];
 
 describe("Testando API de postagens do blog", function () {
    before(() => {
